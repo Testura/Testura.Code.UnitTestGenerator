@@ -1,7 +1,7 @@
 ﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Mono.Cecil;
 
-namespace Testura.Code.UnitTests.UnitTestGenerators
+namespace Testura.Code.UnitTests.Generators.UnitTestGenerators
 {
     public interface IUnitTestGenerator
     {

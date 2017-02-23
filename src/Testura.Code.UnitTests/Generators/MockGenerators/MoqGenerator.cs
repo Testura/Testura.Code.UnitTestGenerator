@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Mono.Cecil;
-using Mono.CompilerServices.SymbolWriter;
-using Moq;
 using Testura.Code.CecilHelpers.Extensions;
 using Testura.Code.Generators.Common;
 using Testura.Code.Generators.Common.Arguments.ArgumentTypes;
@@ -12,7 +9,7 @@ using Testura.Code.Models.References;
 using Testura.Code.Models.Types;
 using Testura.Code.Statements;
 
-namespace Testura.Code.UnitTests.MockGenerators
+namespace Testura.Code.UnitTests.Generators.MockGenerators
 {
     public class MoqGenerator : IMockGenerator
     {

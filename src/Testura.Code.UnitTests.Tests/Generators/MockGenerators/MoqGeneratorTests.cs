@@ -4,7 +4,7 @@ using System.Linq;
 using Mono.Cecil;
 using NUnit.Framework;
 using Testura.Code.Models.Types;
-using Testura.Code.UnitTests.MockGenerators;
+using Testura.Code.UnitTests.Generators.MockGenerators;
 using Testura.Code.UnitTests.Models;
 
 namespace Testura.Code.UnitTests.Tests.MockGenerators

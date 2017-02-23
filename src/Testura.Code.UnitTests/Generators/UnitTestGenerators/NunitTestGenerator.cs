@@ -6,9 +6,9 @@ using Mono.Cecil.Rocks;
 using Testura.Code.Builders;
 using Testura.Code.Generators.Common;
 using Testura.Code.Models;
-using Testura.Code.UnitTests.MockGenerators;
+using Testura.Code.UnitTests.Generators.MockGenerators;
 
-namespace Testura.Code.UnitTests.UnitTestGenerators
+namespace Testura.Code.UnitTests.Generators.UnitTestGenerators
 {
     public class NunitTestGenerator : IUnitTestGenerator
     {

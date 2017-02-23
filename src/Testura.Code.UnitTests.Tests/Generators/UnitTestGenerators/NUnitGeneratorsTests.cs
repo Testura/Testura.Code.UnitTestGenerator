@@ -5,8 +5,8 @@ using Mono.Cecil;
 using Moq;
 using NUnit.Framework;
 using Testura.Code.Models;
-using Testura.Code.UnitTests.MockGenerators;
-using Testura.Code.UnitTests.UnitTestGenerators;
+using Testura.Code.UnitTests.Generators.MockGenerators;
+using Testura.Code.UnitTests.Generators.UnitTestGenerators;
 
 namespace Testura.Code.UnitTests.Tests.UnitTestGenerators
 {

@@ -3,7 +3,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Mono.Cecil;
 using Testura.Code.Models;
 
-namespace Testura.Code.UnitTests.MockGenerators
+namespace Testura.Code.UnitTests.Generators.MockGenerators
 {
     public interface IMockGenerator
     {
