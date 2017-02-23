@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26127.3
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Testura.Code.UnitTests", "src\Testura.Code.UnitTests\Testura.Code.UnitTests.csproj", "{441975F9-7600-4280-9614-17F2843B1695}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Testura.Code.UnitTests.Tests", "src\Testura.Code.UnitTests.Tests\Testura.Code.UnitTests.Tests.csproj", "{2018B986-C520-465B-A0E7-B66C190BA1EC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{441975F9-7600-4280-9614-17F2843B1695}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{441975F9-7600-4280-9614-17F2843B1695}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{441975F9-7600-4280-9614-17F2843B1695}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{441975F9-7600-4280-9614-17F2843B1695}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2018B986-C520-465B-A0E7-B66C190BA1EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2018B986-C520-465B-A0E7-B66C190BA1EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2018B986-C520-465B-A0E7-B66C190BA1EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2018B986-C520-465B-A0E7-B66C190BA1EC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
