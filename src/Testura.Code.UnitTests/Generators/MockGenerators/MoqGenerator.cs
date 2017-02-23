@@ -25,20 +25,25 @@ namespace Testura.Code.UnitTests.Generators.MockGenerators
             {
                 var typeDefinition = parameter.Type.Resolve();
 
-                if ((typeDefinition.IsInterface || typeDefinition.IsAbstract) && !typeDefinition.IsArray)
+                if ((typeDefinition.IsInterface || typeDefinition.IsAbstract) && !parameter.Type.IsICollection())
                 {
-                    fields.Add(new Field($"{parameter.Name}Mock",
+                    fields.Add(new Field(
+                        $"{parameter.Name}Mock",
                         CustomType.Create($"Mock<{parameter.Type.FormatedTypeName()}>"),
                         new List<Modifiers> {Modifiers.Private}));
                 }
-                else if (typeDefinition.IsClass && !typeDefinition.IsValueType && typeDefinition.Name != "String")
+                else if ((typeDefinition.IsClass && !typeDefinition.IsValueType && typeDefinition.Name != "String") || typeDefinition.IsICollection())
                 {
-                    fields.Add(new Field($"{parameter.Name}", CustomType.Create(parameter.Type.FormatedTypeName()),
+                    fields.Add(new Field(
+                        $"{parameter.Name}", 
+                        CustomType.Create(parameter.Type.FormatedTypeName()),
                         new List<Modifiers> {Modifiers.Private}));
                 }
             }
 
-            fields.Add(new Field(typeUnderTest.FormatedFieldName(), CustomType.Create(typeUnderTest.FormatedTypeName()),
+            fields.Add(new Field(
+                typeUnderTest.FormatedFieldName(),
+                CustomType.Create(typeUnderTest.FormatedTypeName()),
                 new List<Modifiers> {Modifiers.Private}));
             return fields;
         }
@@ -56,18 +61,19 @@ namespace Testura.Code.UnitTests.Generators.MockGenerators
 
             foreach (var parameter in parameters)
             {
-                var typeReference = parameter.Type.Resolve();
+                var typeDefinition = parameter.Type.Resolve();
 
-                if (typeReference.IsInterface || typeReference.IsAbstract)
+                if ((typeDefinition.IsInterface || typeDefinition.IsAbstract) && !typeDefinition.IsICollection())
                 {
                     statements.Add(Statement.Declaration.Assign($"{parameter.Name}Mock",
                         CustomType.Create($"Mock<{parameter.Type.FormatedTypeName()}>"),
                         ArgumentGenerator.Create()));
+
                     arguments.Add(
                         new ReferenceArgument(new VariableReference($"{parameter.Name}Mock",
                             new Testura.Code.Models.References.MemberReference("Object"))));
                 }
-                else if (typeReference.Name.StartsWith("List") || typeReference.Name.StartsWith("Collection") || typeReference.Name.StartsWith("Dictionary"))
+                else if (typeDefinition.IsCollection())
                 {
                     statements.Add(Statement.Declaration.Assign($"{parameter.Name}",
                         CustomType.Create($"{parameter.Type.FormatedTypeName()}"),
@@ -75,11 +81,19 @@ namespace Testura.Code.UnitTests.Generators.MockGenerators
                     arguments.Add(
                         new ReferenceArgument(new VariableReference($"{parameter.Name}")));
                 }
-                else if (typeReference.IsValueType)
+                else if (typeDefinition.IsICollection())
+                {
+                    statements.Add(Statement.Declaration.Assign($"{parameter.Name}",
+                        CustomType.Create($"{parameter.Type.FormatedTypeName().Remove(0, 1)}"),
+                        ArgumentGenerator.Create()));
+                    arguments.Add(
+                        new ReferenceArgument(new VariableReference($"{parameter.Name}")));
+                }
+                else if (typeDefinition.IsValueType)
                 {
                     arguments.Add(new ValueArgument(0));
                 }
-                else if (typeReference.Name == "String")
+                else if (typeDefinition.Name == "String")
                 {
                     arguments.Add(
                         new ReferenceArgument(new VariableReference("string",

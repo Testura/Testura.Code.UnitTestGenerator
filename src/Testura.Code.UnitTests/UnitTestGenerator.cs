@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Linq;
 using Mono.Cecil;
+using Testura.Code.CecilHelpers.Extensions;
 using Testura.Code.Saver;
 using Testura.Code.UnitTests.Factories;
 using Testura.Code.UnitTests.Services;
@@ -44,7 +45,7 @@ namespace Testura.Code.UnitTests
                 }
 
                 var @class = unitTestGenerator.GenerateUnitTest(type);
-                _codeSaver.SaveCodeToFile(@class, Path.Combine(path, $"{type.Name}Tests.cs"));
+                _codeSaver.SaveCodeToFile(@class, Path.Combine(path, $"{type.FormatedClassName()}Tests.cs"));
             }
         }
     }

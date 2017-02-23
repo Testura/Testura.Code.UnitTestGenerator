@@ -4,6 +4,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Mono.Cecil;
 using Mono.Cecil.Rocks;
 using Testura.Code.Builders;
+using Testura.Code.CecilHelpers.Extensions;
 using Testura.Code.Generators.Common;
 using Testura.Code.Models;
 using Testura.Code.UnitTests.Generators.MockGenerators;
@@ -25,7 +26,7 @@ namespace Testura.Code.UnitTests.Generators.UnitTestGenerators
             var fields = _mockGenerator.CreateFields(typeUnderTest, parameters);
             var setUp = GenerateSetUp(typeUnderTest, parameters);
 
-            return new ClassBuilder($"{typeUnderTest.Name}Tests", typeUnderTest.Namespace)
+            return new ClassBuilder($"{typeUnderTest.FormatedClassName()}Tests", typeUnderTest.Namespace)
                 .WithAttributes(new Attribute("TestFixture"))
                 .WithModifiers(Modifiers.Public)
                 .WithFields(fields.ToArray())
