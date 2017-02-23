@@ -109,9 +109,6 @@
     <Compile Include="Generators\UnitTestGenerators\IUnitTestGenerator.cs" />
     <Compile Include="Generators\UnitTestGenerators\NunitTestGenerator.cs" />
     <Compile Include="Util\Enums.cs" />
-    <Compile Include="Util\Extensions\StringExtensions.cs" />
-    <Compile Include="Util\Extensions\TypeDefinitionExtensions.cs" />
-    <Compile Include="Util\Extensions\TypeReferenceExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -119,6 +116,12 @@
   <ItemGroup>
     <Analyzer Include="..\..\packages\Microsoft.CodeAnalysis.Analyzers.1.1.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.Analyzers.dll" />
     <Analyzer Include="..\..\packages\Microsoft.CodeAnalysis.Analyzers.1.1.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.CSharp.Analyzers.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Testura.Code.CecilHelpers\Testura.Code.CecilHelpers.csproj">
+      <Project>{db05be4d-5d70-4965-b2fd-b164a9f8d9bc}</Project>
+      <Name>Testura.Code.CecilHelpers</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

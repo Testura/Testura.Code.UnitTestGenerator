@@ -4,13 +4,13 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Mono.Cecil;
 using Mono.CompilerServices.SymbolWriter;
 using Moq;
+using Testura.Code.CecilHelpers.Extensions;
 using Testura.Code.Generators.Common;
 using Testura.Code.Generators.Common.Arguments.ArgumentTypes;
 using Testura.Code.Models;
 using Testura.Code.Models.References;
 using Testura.Code.Models.Types;
 using Testura.Code.Statements;
-using Testura.Code.UnitTests.Util.Extensions;
 
 namespace Testura.Code.UnitTests.MockGenerators
 {

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Testura.Code.UnitTests.Util.Extensions
+﻿namespace Testura.Code.CecilHelpers.Extensions
 {
     public static class StringExtensions
     {
