@@ -31,20 +31,21 @@ namespace Testura.Code.UnitTestGenerator
         {
             var assembly = AssemblyDefinition.ReadAssembly(assemblyPath);
             var assemblyName = assembly.Name.Name;
+            var assemblyTestName = $"{assemblyName}.Tests";
             var types = assembly.MainModule.Types.Where(t => t.IsPublic && !t.IsAbstract && !t.IsInterface);
             var mockGenerator = MockGeneratorFactory.GetMockGenerator(mockFramework);
             var unitTestGenerator = UnitTestGeneratorFactory.GetUnitTestGenerator(testFramework, mockGenerator);
-            _fileService.CreateDirectory(Path.Combine(outputDirectory, assemblyName));
+            _fileService.CreateDirectory(Path.Combine(outputDirectory, assemblyTestName));
             foreach (var type in types)
             {
                 var @namespace = type.Namespace.Replace($"{assemblyName}.", string.Empty).Split('.');
-                var path = Path.Combine(outputDirectory, assemblyName, string.Join(@"/", @namespace));
+                var path = Path.Combine(outputDirectory, assemblyTestName, string.Join(@"/", @namespace));
                 if (!_fileService.DirectoryExists(path))
                 {
                     _fileService.CreateDirectory(path);
                 }
 
-                var @class = unitTestGenerator.GenerateUnitTest(type);
+                var @class = unitTestGenerator.GenerateUnitTest(type, assemblyName);
                 _codeSaver.SaveCodeToFile(@class, Path.Combine(path, $"{type.FormatedClassName()}Tests.cs"));
             }
         }

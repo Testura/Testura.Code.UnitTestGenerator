@@ -108,6 +108,11 @@ namespace Testura.Code.UnitTestGenerator.Generators.MockGenerators
                 CustomType.Create(typeUnderTest.FormatedTypeName()), ArgumentGenerator.Create(arguments.ToArray())));
             return statements;
         }
+
+        public IEnumerable<string> GetRequiredNamespaces()
+        {
+            return new List<string> {"Moq"};
+        }
     }
 }
 

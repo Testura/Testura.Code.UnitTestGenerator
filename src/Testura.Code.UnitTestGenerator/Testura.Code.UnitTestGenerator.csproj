@@ -95,13 +95,15 @@
     <Compile Include="Factories\UnitTestGeneratorFactory.cs" />
     <Compile Include="Generators\MockGenerators\IMockGenerator.cs" />
     <Compile Include="Generators\MockGenerators\MoqGenerator.cs" />
+    <Compile Include="Generators\UnitTestGenerators\IUnitTestClassGenerator.cs" />
+    <Compile Include="Generators\UnitTestGenerators\MsTestClassGenerator.cs" />
     <Compile Include="Models\Parameter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\FileService.cs" />
     <Compile Include="Services\IFileService.cs" />
     <Compile Include="UnitTestGenerator.cs" />
-    <Compile Include="Generators\UnitTestGenerators\IUnitTestGenerator.cs" />
-    <Compile Include="Generators\UnitTestGenerators\NunitTestGenerator.cs" />
+    <Compile Include="Generators\UnitTestGenerators\UnitTestClassGenerator.cs" />
+    <Compile Include="Generators\UnitTestGenerators\NunitTestClassGenerator.cs" />
     <Compile Include="Util\Enums.cs" />
   </ItemGroup>
   <ItemGroup>

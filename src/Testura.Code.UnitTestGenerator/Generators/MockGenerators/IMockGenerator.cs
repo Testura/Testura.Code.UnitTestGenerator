@@ -9,5 +9,6 @@ namespace Testura.Code.UnitTestGenerator.Generators.MockGenerators
     {
         IList<Field> CreateFields(TypeDefinition typeUnderTest, IEnumerable<Models.Parameter> parameters);
         IList<StatementSyntax> GenerateSetUpStatements(TypeDefinition typeUnderTest, IEnumerable<Models.Parameter> parameters);
+        IEnumerable<string> GetRequiredNamespaces();
     }
 }
