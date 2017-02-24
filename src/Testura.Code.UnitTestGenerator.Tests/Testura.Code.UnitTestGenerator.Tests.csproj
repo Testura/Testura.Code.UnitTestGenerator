@@ -108,6 +108,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CecilHelpers\Extensions\StringExtensionTests.cs" />
     <Compile Include="Generators\Do.cs" />
     <Compile Include="Generators\MockGenerators\MoqGeneratorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -119,6 +120,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Testura.Code.CecilHelpers\Testura.Code.CecilHelpers.csproj">
+      <Project>{db05be4d-5d70-4965-b2fd-b164a9f8d9bc}</Project>
+      <Name>Testura.Code.CecilHelpers</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Testura.Code.UnitTestGenerator\Testura.Code.UnitTestGenerator.csproj">
       <Project>{441975f9-7600-4280-9614-17f2843b1695}</Project>
       <Name>Testura.Code.UnitTestGenerator</Name>
