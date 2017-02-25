@@ -2,7 +2,7 @@
 {
     public enum TestFrameworks
     {
-        MsTest, 
+        MsTest,
         NUnit
     }
 

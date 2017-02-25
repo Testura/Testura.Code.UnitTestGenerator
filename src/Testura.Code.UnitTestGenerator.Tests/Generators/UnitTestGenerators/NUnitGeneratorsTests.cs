@@ -4,10 +4,10 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Mono.Cecil;
 using Moq;
 using NUnit.Framework;
-using NUnit.Framework.Internal;
 using Testura.Code.Models;
 using Testura.Code.UnitTestGenerator.Generators.MockGenerators;
 using Testura.Code.UnitTestGenerator.Generators.UnitTestGenerators;
+using Testura.Code.UnitTestGenerator.Tests.Helpers;
 
 namespace Testura.Code.UnitTestGenerator.Tests.Generators.UnitTestGenerators
 {
@@ -25,53 +25,52 @@ namespace Testura.Code.UnitTestGenerator.Tests.Generators.UnitTestGenerators
         }
 
         [Test]
-        public void GemerateUnitTests_WhenGenerateUnitTest_ShouldContainSetUp()
+        public void GenerateUnitTests_WhenGenerateUnitTest_ShouldContainSetUp()
         {
-            var type = new TypeDefinition("myNamespace", "MyClass", TypeAttributes.Class);
-            _mockGeneratorMock.Setup(m => m.CreateFields(type, It.IsAny<IEnumerable<Models.Parameter>>()))
-                .Returns(new List<Field>());
-            _mockGeneratorMock.Setup(m => m.GenerateSetUpStatements(type, It.IsAny<IEnumerable<Models.Parameter>>()))
+            _mockGeneratorMock.Setup(m => m.GenerateFields(typeof(NUnitGeneratorsTests), It.IsAny<IEnumerable<Models.Parameter>>()))
+                .Returns(new List<FieldDeclarationSyntax>());
+            _mockGeneratorMock.Setup(m => m.GenerateSetUpStatements(typeof(NUnitGeneratorsTests), It.IsAny<IEnumerable<Models.Parameter>>()))
                 .Returns(new List<StatementSyntax>());
-            var generatedCode = _nunitTestClassGenerator.GenerateUnitTest(type, "myNamespace");
+            var generatedCode = _nunitTestClassGenerator.GenerateUnitTest(typeof(NUnitGeneratorsTests), "Testura.Code.UnitTestGenerator.Tests.Generators.UnitTestGenerators");
             Assert.IsTrue(generatedCode.ToString().Contains("[SetUp]"));
         }
 
         [Test]
-        public void GemerateUnitTests_WhenGenerateUnitTest_ShouldContainTestFixture()
+        public void GenerateUnitTests_WhenGenerateUnitTest_ShouldContainTestFixture()
         {
             var type = new TypeDefinition("myNamespace", "MyClass", TypeAttributes.Class);
-            _mockGeneratorMock.Setup(m => m.CreateFields(type, It.IsAny<IEnumerable<Models.Parameter>>()))
-                .Returns(new List<Field>());
-            _mockGeneratorMock.Setup(m => m.GenerateSetUpStatements(type, It.IsAny<IEnumerable<Models.Parameter>>()))
+            _mockGeneratorMock.Setup(m => m.GenerateFields(typeof(NUnitGeneratorsTests), It.IsAny<IEnumerable<Models.Parameter>>()))
+                .Returns(new List<FieldDeclarationSyntax>());
+            _mockGeneratorMock.Setup(m => m.GenerateSetUpStatements(typeof(NUnitGeneratorsTests), It.IsAny<IEnumerable<Models.Parameter>>()))
                 .Returns(new List<StatementSyntax>());
-            var generatedCode = _nunitTestClassGenerator.GenerateUnitTest(type, "myNamespace");
+            var generatedCode = _nunitTestClassGenerator.GenerateUnitTest(typeof(NUnitGeneratorsTests), "Testura.Code.UnitTestGenerator.Tests.Generators.UnitTestGenerators");
             Assert.IsTrue(generatedCode.ToString().Contains("[TestFixture]"));
         }
 
         [Test]
-        public void GemerateUnitTests_WhenGenerateUnitTest_ShouldContainCorrectNamespace()
+        public void GenerateUnitTests_WhenGenerateUnitTest_ShouldContainCorrectNamespace()
         {
-            var type = new TypeDefinition("myNamespace.my.space", "MyClass", TypeAttributes.Class);
-            _mockGeneratorMock.Setup(m => m.CreateFields(type, It.IsAny<IEnumerable<Models.Parameter>>()))
-                .Returns(new List<Field>());
-            _mockGeneratorMock.Setup(m => m.GenerateSetUpStatements(type, It.IsAny<IEnumerable<Models.Parameter>>()))
+            _mockGeneratorMock.Setup(m => m.GenerateFields(typeof(NUnitGeneratorsTests), It.IsAny<IEnumerable<Models.Parameter>>()))
+                .Returns(new List<FieldDeclarationSyntax>());
+            _mockGeneratorMock.Setup(m => m.GenerateSetUpStatements(typeof(NUnitGeneratorsTests), It.IsAny<IEnumerable<Models.Parameter>>()))
                 .Returns(new List<StatementSyntax>());
-            var generatedCode = _nunitTestClassGenerator.GenerateUnitTest(type, "myNamespace");
+            var generatedCode = _nunitTestClassGenerator.GenerateUnitTest(typeof(NUnitGeneratorsTests), "myNamespace");
 
             var o = generatedCode.NormalizeWhitespace().ToString();
-            Assert.IsTrue(generatedCode.ToString().Contains("namespacemyNamespace.my.space"));
+            Assert.IsTrue(generatedCode.ToString().Contains("Testura.Code.UnitTestGenerator.Tests.Generators.UnitTestGenerators"));
         }
 
         [Test]
-        public void GemerateUnitTests_WhenGenerateUnitTest_ShouldContainFields()
+        public void GenerateUnitTests_WhenGenerateUnitTestWithGenericClass_ShouldHaveCorrectName()
         {
-            var type = new TypeDefinition("myNamespace", "MyClass", TypeAttributes.Class);
-            _mockGeneratorMock.Setup(m => m.CreateFields(type, It.IsAny<IEnumerable<Models.Parameter>>()))
-                .Returns(new List<Field> { new Field("myField", typeof(int)) });
-            _mockGeneratorMock.Setup(m => m.GenerateSetUpStatements(type, It.IsAny<IEnumerable<Models.Parameter>>()))
+            _mockGeneratorMock.Setup(m => m.GenerateFields(typeof(MyClassWithGeneric<int>), It.IsAny<IEnumerable<Models.Parameter>>()))
+                .Returns(new List<FieldDeclarationSyntax>());
+            _mockGeneratorMock.Setup(m => m.GenerateSetUpStatements(typeof(MyClassWithGeneric<int>), It.IsAny<IEnumerable<Models.Parameter>>()))
                 .Returns(new List<StatementSyntax>());
-            var generatedCode = _nunitTestClassGenerator.GenerateUnitTest(type, "myNamespace");
-            Assert.IsTrue(generatedCode.ToString().Contains("intmyField"));
+            var generatedCode = _nunitTestClassGenerator.GenerateUnitTest(typeof(MyClassWithGeneric<int>), "myNamespace");
+
+            var o = generatedCode.NormalizeWhitespace().ToString();
+            Assert.IsTrue(generatedCode.ToString().Contains("publicclassMyClassWithGenericTests"));
         }
     }
 }

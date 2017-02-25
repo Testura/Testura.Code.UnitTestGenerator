@@ -16,6 +16,5 @@ namespace Testura.Code.UnitTestGenerator.Factories
                     throw new ArgumentOutOfRangeException(nameof(mockFramework), mockFramework, null);
             }
         }
-
     }
 }

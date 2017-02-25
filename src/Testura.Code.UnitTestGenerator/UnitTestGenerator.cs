@@ -1,11 +1,8 @@
-﻿using System.IO;
-using System.Linq;
-using Mono.Cecil;
-using Testura.Code.CecilHelpers.Extensions;
+﻿using System.Collections.Generic;
 using Testura.Code.Saver;
-using Testura.Code.UnitTestGenerator.Factories;
 using Testura.Code.UnitTestGenerator.Services;
 using Testura.Code.UnitTestGenerator.Util;
+using Testura.Code.Util.AppDomains;
 
 namespace Testura.Code.UnitTestGenerator
 {
@@ -29,25 +26,13 @@ namespace Testura.Code.UnitTestGenerator
         /// <param name="outputDirectory">Path to the output directory where we should save the files</param>
         public void GenerateUnitTests(string assemblyPath, TestFrameworks testFramework, MockFrameworks mockFramework, string outputDirectory)
         {
-            var assembly = AssemblyDefinition.ReadAssembly(assemblyPath);
-            var assemblyName = assembly.Name.Name;
-            var assemblyTestName = $"{assemblyName}.Tests";
-            var types = assembly.MainModule.Types.Where(t => t.IsPublic && !t.IsAbstract && !t.IsInterface);
-            var mockGenerator = MockGeneratorFactory.GetMockGenerator(mockFramework);
-            var unitTestGenerator = UnitTestGeneratorFactory.GetUnitTestGenerator(testFramework, mockGenerator);
-            _fileService.CreateDirectory(Path.Combine(outputDirectory, assemblyTestName));
-            foreach (var type in types)
+            var appDomainCodeGenerator = new AppDomainCodeGenerator();
+            appDomainCodeGenerator.GenerateCode(assemblyPath, new AppDomainUnitTestGenerator(testFramework, mockFramework, outputDirectory), new Dictionary<string, object>
             {
-                var @namespace = type.Namespace.Replace($"{assemblyName}.", string.Empty).Split('.');
-                var path = Path.Combine(outputDirectory, assemblyTestName, string.Join(@"/", @namespace));
-                if (!_fileService.DirectoryExists(path))
-                {
-                    _fileService.CreateDirectory(path);
-                }
-
-                var @class = unitTestGenerator.GenerateUnitTest(type, assemblyName);
-                _codeSaver.SaveCodeToFile(@class, Path.Combine(path, $"{type.FormatedClassName()}Tests.cs"));
-            }
+                ["mockFramework"] = mockFramework,
+                ["testFramework"] = testFramework,
+                ["outputPath"] = outputDirectory
+            });
         }
     }
 }

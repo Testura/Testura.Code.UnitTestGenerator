@@ -1,7 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Mono.Cecil;
-using Testura.Code.CecilHelpers.Extensions;
+using Testura.Code.Extensions;
+using Testura.Code.Extensions.Naming;
+using Testura.Code.Generators.Class;
 using Testura.Code.Generators.Common;
 using Testura.Code.Generators.Common.Arguments.ArgumentTypes;
 using Testura.Code.Models;
@@ -13,106 +16,110 @@ namespace Testura.Code.UnitTestGenerator.Generators.MockGenerators
 {
     public class MoqGenerator : IMockGenerator
     {
-        public IList<Field> CreateFields(TypeDefinition typeUnderTest, IEnumerable<Models.Parameter> parameters)
+        public string[] RequiredNamespaces => new[] { "Moq" };
+
+        public IEnumerable<FieldDeclarationSyntax> GenerateFields(Type typeUnderTest, IEnumerable<Parameter> parameters)
         {
-            if (typeUnderTest.HasGenericParameters)
+            if (typeUnderTest.ContainsGenericParameters)
             {
-                return new List<Field>();
+                return new List<FieldDeclarationSyntax>();
             }
 
             var fields = new List<Field>();
             foreach (var parameter in parameters)
             {
-                var typeDefinition = parameter.Type.Resolve();
-
-                if ((typeDefinition.IsInterface || typeDefinition.IsAbstract) && !parameter.Type.IsICollection())
+                var type = parameter.Type;
+                if ((type.IsInterface || type.IsAbstract) && !type.IsCollection() && !type.IsICollection())
                 {
                     fields.Add(new Field(
                         $"{parameter.Name}Mock",
-                        CustomType.Create($"Mock<{parameter.Type.FormatedTypeName()}>"),
-                        new List<Modifiers> {Modifiers.Private}));
+                        CustomType.Create($"Mock<{parameter.Type.FormattedTypeName()}>"),
+                        new List<Modifiers> { Modifiers.Private }));
                 }
-                else if ((typeDefinition.IsClass && !typeDefinition.IsValueType && typeDefinition.Name != "String") || typeDefinition.IsICollection())
+                else if ((type.IsClass && !type.IsValueType && type.Name != "String") || type.IsICollection())
                 {
                     fields.Add(new Field(
-                        $"{parameter.Name}", 
-                        CustomType.Create(parameter.Type.FormatedTypeName()),
-                        new List<Modifiers> {Modifiers.Private}));
+                        $"{parameter.Name}",
+                        parameter.Type,
+                        new List<Modifiers> { Modifiers.Private }));
                 }
             }
 
             fields.Add(new Field(
-                typeUnderTest.FormatedFieldName(),
-                CustomType.Create(typeUnderTest.FormatedTypeName()),
-                new List<Modifiers> {Modifiers.Private}));
-            return fields;
+                typeUnderTest.FormattedFieldName(),
+                typeUnderTest,
+                new List<Modifiers> { Modifiers.Private }));
+
+            return fields.Select(FieldGenerator.Create);
         }
 
-        public IList<StatementSyntax> GenerateSetUpStatements(TypeDefinition typeUnderTest,
-            IEnumerable<Models.Parameter> parameters)
+        public IEnumerable<StatementSyntax> GenerateSetUpStatements(Type typeUnderTest, IEnumerable<Parameter> parameters)
         {
             var statements = new List<StatementSyntax>();
             var arguments = new List<IArgument>();
 
-            if (typeUnderTest.HasGenericParameters)
+            if (typeUnderTest.ContainsGenericParameters)
             {
                 return new List<StatementSyntax>();
             }
 
             foreach (var parameter in parameters)
             {
-                var typeDefinition = parameter.Type.Resolve();
+                var type = parameter.Type;
 
-                if ((typeDefinition.IsInterface || typeDefinition.IsAbstract) && !typeDefinition.IsICollection())
+                if ((type.IsInterface || type.IsAbstract) && !type.IsICollection())
                 {
-                    statements.Add(Statement.Declaration.Assign($"{parameter.Name}Mock",
-                        CustomType.Create($"Mock<{parameter.Type.FormatedTypeName()}>"),
+                    statements.Add(Statement.Declaration.Assign(
+                        $"{parameter.Name}Mock",
+                        CustomType.Create($"Mock<{parameter.Type.FormattedTypeName()}>"),
                         ArgumentGenerator.Create()));
 
                     arguments.Add(
-                        new ReferenceArgument(new VariableReference($"{parameter.Name}Mock",
-                            new Testura.Code.Models.References.MemberReference("Object"))));
+                        new ReferenceArgument(new VariableReference($"{parameter.Name}Mock", new Code.Models.References.MemberReference("Object"))));
                 }
-                else if (typeDefinition.IsCollection())
+                else if (type.IsCollection())
                 {
-                    statements.Add(Statement.Declaration.Assign($"{parameter.Name}",
-                        CustomType.Create($"{parameter.Type.FormatedTypeName()}"),
+                    statements.Add(Statement.Declaration.Assign(
+                        $"{parameter.Name}",
+                        parameter.Type,
                         ArgumentGenerator.Create()));
                     arguments.Add(
                         new ReferenceArgument(new VariableReference($"{parameter.Name}")));
                 }
-                else if (typeDefinition.IsICollection())
+                else if (type.IsICollection())
                 {
-                    statements.Add(Statement.Declaration.Assign($"{parameter.Name}",
-                        CustomType.Create($"{parameter.Type.FormatedTypeName().Remove(0, 1)}"),
+                    statements.Add(Statement.Declaration.Assign(
+                        $"{parameter.Name}",
+                        CustomType.Create($"{parameter.Type.FormattedTypeName().Remove(0, 1)}"),
                         ArgumentGenerator.Create()));
                     arguments.Add(
                         new ReferenceArgument(new VariableReference($"{parameter.Name}")));
                 }
-                else if (typeDefinition.IsValueType)
+                else if (type.IsValueType)
                 {
                     arguments.Add(new ValueArgument(0));
                 }
-                else if (typeDefinition.Name == "String")
+                else if (type.Name == "String")
                 {
                     arguments.Add(
-                        new ReferenceArgument(new VariableReference("string",
-                            new Testura.Code.Models.References.MemberReference("Empty"))));
+                        new ReferenceArgument(
+                            new VariableReference("string", new MemberReference("Empty"))));
+                }
+                else if (type.IsArray)
+                {
+                    arguments.Add(new VariableArgument(parameter.Name));
                 }
                 else
                 {
                     arguments.Add(new ReferenceArgument(new NullReference()));
                 }
             }
-            statements.Add(Statement.Declaration.Assign(typeUnderTest.FormatedFieldName(),
-                CustomType.Create(typeUnderTest.FormatedTypeName()), ArgumentGenerator.Create(arguments.ToArray())));
-            return statements;
-        }
 
-        public IEnumerable<string> GetRequiredNamespaces()
-        {
-            return new List<string> {"Moq"};
+            statements.Add(Statement.Declaration.Assign(
+                typeUnderTest.FormattedFieldName(),
+                CustomType.Create(typeUnderTest.FormattedTypeName()),
+                ArgumentGenerator.Create(arguments.ToArray())));
+            return statements;
         }
     }
 }
-
