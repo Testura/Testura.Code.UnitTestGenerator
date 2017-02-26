@@ -16,10 +16,20 @@ namespace Testura.Code.UnitTestGenerator.Generators.MockGenerators
 {
     public class MoqGenerator : IMockGenerator
     {
+        /// <summary>
+        /// Gets the required namespaces for this mock framework
+        /// </summary>
         public string[] RequiredNamespaces => new[] { "Moq" };
 
+        /// <summary>
+        /// Generate all fields for a unit test class
+        /// </summary>
+        /// <param name="typeUnderTest">Type under test</param>
+        /// <param name="parameters">Parameters that we should create fields from</param>
+        /// <returns>All generated fields</returns>
         public IEnumerable<FieldDeclarationSyntax> GenerateFields(Type typeUnderTest, IEnumerable<Parameter> parameters)
         {
+            // Don't support classes with generic parameters yet..
             if (typeUnderTest.ContainsGenericParameters)
             {
                 return new List<FieldDeclarationSyntax>();
@@ -28,20 +38,10 @@ namespace Testura.Code.UnitTestGenerator.Generators.MockGenerators
             var fields = new List<Field>();
             foreach (var parameter in parameters)
             {
-                var type = parameter.Type;
-                if ((type.IsInterface || type.IsAbstract) && !type.IsCollection() && !type.IsICollection())
+                var field = CreateFieldFromType(parameter.Name, parameter.Type);
+                if (field != null)
                 {
-                    fields.Add(new Field(
-                        $"{parameter.Name}Mock",
-                        CustomType.Create($"Mock<{parameter.Type.FormattedTypeName()}>"),
-                        new List<Modifiers> { Modifiers.Private }));
-                }
-                else if ((type.IsClass && !type.IsValueType && type.Name != "String") || type.IsICollection())
-                {
-                    fields.Add(new Field(
-                        $"{parameter.Name}",
-                        parameter.Type,
-                        new List<Modifiers> { Modifiers.Private }));
+                    fields.Add(field);
                 }
             }
 
@@ -53,6 +53,12 @@ namespace Testura.Code.UnitTestGenerator.Generators.MockGenerators
             return fields.Select(FieldGenerator.Create);
         }
 
+        /// <summary>
+        /// Generate the assign statements inside a set up
+        /// </summary>
+        /// <param name="typeUnderTest">Type under tests</param>
+        /// <param name="parameters">Parameters that we should create assign statements from</param>
+        /// <returns>All generated assign statements</returns>
         public IEnumerable<StatementSyntax> GenerateSetUpStatements(Type typeUnderTest, IEnumerable<Parameter> parameters)
         {
             var statements = new List<StatementSyntax>();
@@ -75,7 +81,7 @@ namespace Testura.Code.UnitTestGenerator.Generators.MockGenerators
                         ArgumentGenerator.Create()));
 
                     arguments.Add(
-                        new ReferenceArgument(new VariableReference($"{parameter.Name}Mock", new Code.Models.References.MemberReference("Object"))));
+                        new ReferenceArgument(new VariableReference($"{parameter.Name}Mock", new MemberReference("Object"))));
                 }
                 else if (type.IsCollection())
                 {
@@ -83,6 +89,7 @@ namespace Testura.Code.UnitTestGenerator.Generators.MockGenerators
                         $"{parameter.Name}",
                         parameter.Type,
                         ArgumentGenerator.Create()));
+
                     arguments.Add(
                         new ReferenceArgument(new VariableReference($"{parameter.Name}")));
                 }
@@ -120,6 +127,26 @@ namespace Testura.Code.UnitTestGenerator.Generators.MockGenerators
                 CustomType.Create(typeUnderTest.FormattedTypeName()),
                 ArgumentGenerator.Create(arguments.ToArray())));
             return statements;
+        }
+
+        private Field CreateFieldFromType(string name, Type type)
+        {
+            if ((type.IsInterface || type.IsAbstract) && !type.IsCollection() && !type.IsICollection())
+            {
+                return new Field(
+                    $"{name}Mock",
+                    CustomType.Create($"Mock<{type.FormattedTypeName()}>"),
+                    new List<Modifiers> { Modifiers.Private });
+            }
+            else if ((type.IsClass && !type.IsValueType && type.Name != "String") || type.IsICollection())
+            {
+                return new Field(
+                    name,
+                    type,
+                    new List<Modifiers> { Modifiers.Private });
+            }
+
+            return null;
         }
     }
 }

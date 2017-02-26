@@ -6,6 +6,7 @@ using Testura.Code.Builders;
 using Testura.Code.Extensions.Naming;
 using Testura.Code.Extensions.Reflection;
 using Testura.Code.Generators.Common;
+using Testura.Code.Models;
 using Testura.Code.UnitTestGenerator.Generators.MockGenerators;
 using Attribute = Testura.Code.Models.Attribute;
 
@@ -22,21 +23,39 @@ namespace Testura.Code.UnitTestGenerator.Generators.UnitTestGenerators
             _usings = new List<string>();
         }
 
+        /// <summary>
+        /// Gets the name of the class attribute
+        /// </summary>
         protected abstract string ClassAttribute { get; }
 
+        /// <summary>
+        /// Gets he name of the set up method attribute
+        /// </summary>
         protected abstract string SetUpAttribute { get; }
 
+        /// <summary>
+        /// Gets the required namespaces
+        /// </summary>
         protected abstract string[] RequiredNamespaces { get; }
 
-        public virtual CompilationUnitSyntax GenerateUnitTest(Type typeUnderTest, string assemblyNamespace)
+        /// <summary>
+        /// Generate the unit test class for a type
+        /// </summary>
+        /// <param name="typeUnderTest">Type to generate unit test from</param>
+        /// <returns>The generated class syntax</returns>
+        public virtual CompilationUnitSyntax GenerateUnitTestClass(Type typeUnderTest)
         {
+            var assemblyNamespaceName = typeUnderTest.Assembly.GetName().Name;
+            var generatedUnitTestNamespace = $"{assemblyNamespaceName}.Tests{typeUnderTest.Namespace.Replace(assemblyNamespaceName, string.Empty)}";
+
             SetUpUsings(typeUnderTest);
+
             var parameters = GetConstructorParameters(typeUnderTest);
             var fields = _mockGenerator.GenerateFields(typeUnderTest, parameters);
             var setUp = GenerateSetUp(typeUnderTest, parameters);
 
-            return new ClassBuilder($"{typeUnderTest.FormattedClassName()}Tests", $"{assemblyNamespace}.Tests{typeUnderTest.Namespace.Replace(assemblyNamespace, string.Empty)}")
-                .WithAttributes(new Attribute("TestFixture"))
+            return new ClassBuilder($"{typeUnderTest.FormattedClassName()}Tests", generatedUnitTestNamespace)
+                .WithAttributes(new Attribute(ClassAttribute))
                 .WithUsings(_usings.ToArray())
                 .WithModifiers(Modifiers.Public)
                 .WithFields(fields.ToArray())
@@ -44,20 +63,11 @@ namespace Testura.Code.UnitTestGenerator.Generators.UnitTestGenerators
                 .Build();
         }
 
-        protected void AddUsing(string @namespace)
-        {
-            if (string.IsNullOrEmpty(@namespace) || _usings.Contains(@namespace))
-            {
-                return;
-            }
-
-            _usings.Add(@namespace);
-        }
-
         private IEnumerable<Models.Parameter> GetConstructorParameters(Type typeUnderTest)
         {
-            var parameters = new List<Models.Parameter>();
+            var parameters = new List<Parameter>();
             var constructor = typeUnderTest.GetConstructors();
+
             if (constructor.Any())
             {
                 foreach (var parameter in constructor.First().GetParameters())
@@ -82,7 +92,7 @@ namespace Testura.Code.UnitTestGenerator.Generators.UnitTestGenerators
         private MethodDeclarationSyntax GenerateSetUp(Type typeUnderTest, IEnumerable<Models.Parameter> parameters)
         {
             return new MethodBuilder("SetUp")
-                .WithAttributes(new Attribute("SetUp"))
+                .WithAttributes(new Attribute(SetUpAttribute))
                 .WithModifiers(Modifiers.Public)
                 .WithBody(BodyGenerator.Create(_mockGenerator.GenerateSetUpStatements(typeUnderTest, parameters).ToArray()))
                 .Build();
@@ -96,6 +106,16 @@ namespace Testura.Code.UnitTestGenerator.Generators.UnitTestGenerators
             {
                 AddUsing(requiredNamespace);
             }
+        }
+
+        private void AddUsing(string @namespace)
+        {
+            if (string.IsNullOrEmpty(@namespace) || _usings.Contains(@namespace))
+            {
+                return;
+            }
+
+            _usings.Add(@namespace);
         }
     }
 }
