@@ -96,7 +96,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Generators\Do.cs" />
     <Compile Include="Generators\MockGenerators\MoqGeneratorTests.cs" />
     <Compile Include="Helpers\MyAbstractClass.cs" />
     <Compile Include="Helpers\MyClassWithGeneric.cs" />
