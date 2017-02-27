@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Testura.Code.UnitTestGenerator.Generators.UnitTestGenerators
+namespace Testura.Code.UnitTestGenerator.Generators.UnitTestClassGenerators
 {
     public interface IUnitTestClassGenerator
     {

@@ -4,7 +4,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Moq;
 using NUnit.Framework;
 using Testura.Code.UnitTestGenerator.Generators.MockGenerators;
-using Testura.Code.UnitTestGenerator.Generators.UnitTestGenerators;
+using Testura.Code.UnitTestGenerator.Generators.UnitTestClassGenerators;
 using Testura.Code.UnitTestGenerator.Tests.Helpers;
 
 namespace Testura.Code.UnitTestGenerator.Tests.Generators.UnitTestGenerators

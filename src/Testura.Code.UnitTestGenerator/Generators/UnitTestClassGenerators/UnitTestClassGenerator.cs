@@ -10,7 +10,7 @@ using Testura.Code.Models;
 using Testura.Code.UnitTestGenerator.Generators.MockGenerators;
 using Attribute = Testura.Code.Models.Attribute;
 
-namespace Testura.Code.UnitTestGenerator.Generators.UnitTestGenerators
+namespace Testura.Code.UnitTestGenerator.Generators.UnitTestClassGenerators
 {
     public abstract class UnitTestClassGenerator : IUnitTestClassGenerator
     {
@@ -63,7 +63,7 @@ namespace Testura.Code.UnitTestGenerator.Generators.UnitTestGenerators
                 .Build();
         }
 
-        private IEnumerable<Models.Parameter> GetConstructorParameters(Type typeUnderTest)
+        private IEnumerable<Parameter> GetConstructorParameters(Type typeUnderTest)
         {
             var parameters = new List<Parameter>();
             var constructor = typeUnderTest.GetConstructors();
@@ -74,6 +74,13 @@ namespace Testura.Code.UnitTestGenerator.Generators.UnitTestGenerators
                 {
                     parameters.Add(parameter.ToParameter());
                     AddUsing(parameter.ParameterType.Namespace);
+                    if (parameter.ParameterType.IsGenericType)
+                    {
+                        foreach (var generic in parameter.ParameterType.GetGenericArguments())
+                        {
+                            AddUsing(generic.Namespace);
+                        }
+                    }
                 }
             }
 

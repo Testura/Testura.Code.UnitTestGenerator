@@ -27,7 +27,7 @@ namespace Testura.Code.UnitTestGenerator
                 ["outputPath"] = outputDirectory
             };
 
-            var appDomainCodeGenerator = new AppDomainCodeGenerator();
+            var appDomainCodeGenerator = new AppDomainCodeGenerator { ApplicationBase = ApplicationBase};
             appDomainCodeGenerator.GenerateCode(assemblyPath, new UnitTestGeneratorProxy(), extraData);
         }
     }

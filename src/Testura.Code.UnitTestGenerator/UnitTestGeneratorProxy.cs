@@ -6,7 +6,7 @@ using System.Reflection;
 using Testura.Code.Extensions.Naming;
 using Testura.Code.Saver;
 using Testura.Code.UnitTestGenerator.Factories;
-using Testura.Code.UnitTestGenerator.Generators.UnitTestGenerators;
+using Testura.Code.UnitTestGenerator.Generators.UnitTestClassGenerators;
 using Testura.Code.UnitTestGenerator.Services;
 using Testura.Code.UnitTestGenerator.Util;
 using Testura.Code.Util.AppDomains.Proxies;

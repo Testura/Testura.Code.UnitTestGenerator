@@ -102,9 +102,13 @@ namespace Testura.Code.UnitTestGenerator.Generators.MockGenerators
                     arguments.Add(
                         new ReferenceArgument(new VariableReference($"{parameter.Name}")));
                 }
-                else if (type.IsValueType)
+                else if (type.IsNumeric())
                 {
                     arguments.Add(new ValueArgument(0));
+                }
+                else if (type == typeof(bool))
+                {
+                    arguments.Add(new ValueArgument(true));
                 }
                 else if (type.Name == "String")
                 {

@@ -1,6 +1,6 @@
 ﻿using Testura.Code.UnitTestGenerator.Generators.MockGenerators;
 
-namespace Testura.Code.UnitTestGenerator.Generators.UnitTestGenerators
+namespace Testura.Code.UnitTestGenerator.Generators.UnitTestClassGenerators
 {
     public class MsTestClassGenerator : UnitTestClassGenerator
     {

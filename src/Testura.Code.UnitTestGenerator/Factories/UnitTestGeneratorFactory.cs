@@ -1,6 +1,6 @@
 ﻿using System;
 using Testura.Code.UnitTestGenerator.Generators.MockGenerators;
-using Testura.Code.UnitTestGenerator.Generators.UnitTestGenerators;
+using Testura.Code.UnitTestGenerator.Generators.UnitTestClassGenerators;
 using Testura.Code.UnitTestGenerator.Util;
 
 namespace Testura.Code.UnitTestGenerator.Factories
