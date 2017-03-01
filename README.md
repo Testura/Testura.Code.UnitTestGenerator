@@ -15,9 +15,9 @@ Testura.Code.UnitTestGenerator is a simple framework/software that inspect your 
 ## Will generate
 
 * A unit test file for all types that are exported and isn't static or abstract
-* A setUp that initialize the type under test (TUT) by looking at it's first constructor. 
+* A setUp that initialize the type under test (TuT) by looking at it's first constructor. 
  * All required parameters will either be mocked, initialized or set to some default value.
- * Will generate fields for TUT and required parameters
+ * Will generate fields for TuT and required parameters
 * All files created will follw your assembly namespace/directory strcture. 
 
 ## Example usage from api 
