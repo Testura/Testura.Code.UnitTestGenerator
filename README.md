@@ -20,6 +20,13 @@ Testura.Code.UnitTestGenerator is a simple framework/software that inspect your 
  * Will generate fields for TUT and required parameters
 * All files created will follw your assembly namespace/directory strcture. 
 
+## Example usage from api 
+
+```c#
+var unitTestGenerator = new UnitTestGenerator();
+unitTestGenerator.GenerateUnitTests(DllPath, TestFrameworks.NUnit, MockFrameworks.Moq, OutputDirectory);
+ ```
+
 ## GUI
 
 ![Gui](http://i.imgur.com/unqTfan.png)
