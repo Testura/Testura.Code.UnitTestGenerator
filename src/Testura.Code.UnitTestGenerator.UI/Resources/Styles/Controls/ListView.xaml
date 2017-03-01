@@ -1,0 +1,7 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls">
+    <Style x:Key="StandardListView" TargetType="{x:Type ListView}">
+        <Setter Property="BorderThickness" Value="0" />
+    </Style>
+</ResourceDictionary>

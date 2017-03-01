@@ -1,0 +1,8 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:Testura.Module.Resources.Resources.Styles.Controls">
+    <Style x:Key="StandardLabel" TargetType="{x:Type Label}">
+        <Setter Property="Foreground" Value="{DynamicResource LabelTextBrush}" />
+        <Setter Property="FontSize" Value="{DynamicResource NormalFontSize}" />
+    </Style>
+</ResourceDictionary>
