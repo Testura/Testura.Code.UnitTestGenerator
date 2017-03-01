@@ -19,3 +19,7 @@ Testura.Code.UnitTestGenerator is a simple framework/software that inspect your 
  * All required parameters will either be mocked, initialized or set to some default value.
  * Will generate fields for TUT and required parameters
 * All files created will follw your assembly namespace/directory strcture. 
+
+## GUI
+
+![Gui](http://i.imgur.com/unqTfan.png)
