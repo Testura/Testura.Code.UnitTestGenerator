@@ -81,7 +81,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="UnitTestGeneratorProxy.cs" />
     <Compile Include="Factories\MockGeneratorFactory.cs" />
     <Compile Include="Factories\UnitTestGeneratorFactory.cs" />
     <Compile Include="Generators\MockGenerators\IMockGenerator.cs" />
