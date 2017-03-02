@@ -24,7 +24,7 @@ namespace Testura.Code.UnitTestGenerator
         }
 
         /// <summary>
-        /// Generate unit tests from an assembly in a different app domain
+        /// Generate unit tests by looking at exported types from an assembly
         /// </summary>
         /// <param name="assemblyPath">Path to the assembly</param>
         /// <param name="testFramework">Test framework to use when generating code</param>
@@ -47,7 +47,7 @@ namespace Testura.Code.UnitTestGenerator
         }
 
         /// <summary>
-        /// Generate unit tests from an assembly in a different app domain async
+        /// Generate unit tests asynchronous by looking at exported types from an assembly
         /// </summary>
         /// <param name="assemblyPath">Path to the assembly</param>
         /// <param name="testFramework">Test framework to use when generating code</param>
