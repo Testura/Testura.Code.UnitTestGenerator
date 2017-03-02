@@ -3,6 +3,18 @@
 
 Testura.Code.UnitTestGenerator is a simple framework/tool to inspect assemblies and generate unit tests from exported types.
 
+# Install
+
+## Framework at NuGet [![NuGet Status](https://img.shields.io/nuget/v/Testura.Code.UnitTestGenerator.svg?style=flat)](https://www.nuget.org/packages/Testura.Code.UnitTestGenerator)
+
+[https://www.nuget.org/packages/Testura.Code.UnitTestGenerator](https://www.nuget.org/packages/Testura.Code.UnitTestGenerator)
+    
+    PM> Install-Package Testura.Code.UnitTestGenerator
+    
+## Client 
+
+[https://github.com/Testura/Testura.Code.UnitTestGenerator/releases](https://github.com/Testura/Testura.Code.UnitTestGenerator/releases)
+
 ## Supported test frameworks
 
 * MsTest
