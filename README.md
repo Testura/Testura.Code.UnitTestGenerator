@@ -1,7 +1,7 @@
 ![Testura Logo](http://testura.net/Content/Images/logo2.png)
 
 
-Testura.Code.UnitTestGenerator is a simple framework/software that inspect your assembly and generate unit tests for you. 
+Testura.Code.UnitTestGenerator is a simple framework/tool to inspect assemblies and generate unit tests from exported types.
 
 ## Supported test frameworks
 
