@@ -15,6 +15,8 @@ Testura.Code.UnitTestGenerator is a simple framework/tool to inspect assemblies 
 
 [https://github.com/Testura/Testura.Code.UnitTestGenerator/releases](https://github.com/Testura/Testura.Code.UnitTestGenerator/releases)
 
+# Basic info
+
 ## Supported test frameworks
 
 * MsTest
