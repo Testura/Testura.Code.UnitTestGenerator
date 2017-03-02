@@ -30,3 +30,42 @@ unitTestGenerator.GenerateUnitTests(DllPath, TestFrameworks.NUnit, MockFramework
 ## GUI
 
 ![Gui](http://i.imgur.com/unqTfan.png)
+
+## Example of generation 
+
+### Type under test
+
+```c#
+namespace Testura.Android.Device.Services.Default
+{
+    public class UiService
+    {
+        public UiService(IScreenDumper screenDumper, SomeClass someClass, string myString, int number)
+        {
+        }
+    }
+ }
+```
+
+### Generated unit test
+
+```c#
+namespace Testura.Android.Tests.Device.Services.Default
+{
+    [TestFixture]
+    public class UiServiceTest
+    {
+        private Mock<IScreenDumper> screenDumperMock; 
+        private SomeClass someClass; 
+        private UIService uiService; 
+    
+        [SetUp]
+        public SetUp()
+        {
+            screenDumperMock = new Mock<IScreenDumper>(); 
+            uiService = new UiService(screenDumperMock.Object, someClass, string.Empty, 0)
+        }
+    }
+ }
+```
+
