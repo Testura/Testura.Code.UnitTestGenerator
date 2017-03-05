@@ -45,7 +45,7 @@ namespace Testura.Code.UnitTestGenerator.UI.ViewModel
 
         public void OpenDllFileDialog()
         {
-            var path = _fileDialogService.ShowPickFileDialog("dll (.dll)|*.dll");
+            var path = _fileDialogService.ShowPickFileDialog("Dll files (.dll)|*.dll|Exe files (.exe)|*.exe");
             if (!string.IsNullOrEmpty(path))
             {
                 DllPath = path;
