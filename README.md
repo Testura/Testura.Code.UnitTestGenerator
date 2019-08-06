@@ -1,4 +1,4 @@
-![Testura Logo](http://testura.net/Content/Images/logo2.png)
+![Testura Logo](https://i.ibb.co/z7WTnp2/logo2.png)
 
 
 Testura.Code.UnitTestGenerator is a simple framework/tool to inspect assemblies and generate unit tests from exported types. It's created as a simple example on how you can use [Testura.Code](https://github.com/Testura/Testura.Code) 
