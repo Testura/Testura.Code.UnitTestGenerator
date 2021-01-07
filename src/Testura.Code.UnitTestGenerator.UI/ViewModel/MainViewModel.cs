@@ -1,15 +1,13 @@
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
-using PropertyChanged;
 using System;
 using Testura.Code.UnitTestGenerator.UI.Services;
 using Testura.Code.UnitTestGenerator.Util;
 
 namespace Testura.Code.UnitTestGenerator.UI.ViewModel
 {
-	//[ImplementPropertyChanged]
-	[AddINotifyPropertyChangedInterface]
-    public class MainViewModel : ViewModelBase
+    //[ImplementPropertyChanged] --> Obsolete. Included tag <PropertyChanged /> in FodyWeavers.xml	
+    public class MainViewModel  : ViewModelBase
     {
         private IFileDialogService _fileDialogService;
         private IDialogService _dialogService;
