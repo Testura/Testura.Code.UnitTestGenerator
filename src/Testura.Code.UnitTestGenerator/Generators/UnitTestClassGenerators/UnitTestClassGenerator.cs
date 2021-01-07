@@ -98,7 +98,7 @@ namespace Testura.Code.UnitTestGenerator.Generators.UnitTestClassGenerators
 
         private MethodDeclarationSyntax GenerateSetUp(Type typeUnderTest, IEnumerable<Models.Parameter> parameters)
         {
-            return new MethodBuilder("SetUp")
+            return (MethodDeclarationSyntax)new MethodBuilder("SetUp")
                 .WithAttributes(new Attribute(SetUpAttribute))
                 .WithModifiers(Modifiers.Public)
                 .WithBody(BodyGenerator.Create(_mockGenerator.GenerateSetUpStatements(typeUnderTest, parameters).ToArray()))

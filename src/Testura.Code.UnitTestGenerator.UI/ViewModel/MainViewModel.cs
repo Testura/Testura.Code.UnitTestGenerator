@@ -1,14 +1,14 @@
-using System;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using PropertyChanged;
-using Testura.Code.UnitTestGenerator.Services;
+using System;
 using Testura.Code.UnitTestGenerator.UI.Services;
 using Testura.Code.UnitTestGenerator.Util;
 
 namespace Testura.Code.UnitTestGenerator.UI.ViewModel
 {
-    [ImplementPropertyChanged]
+	//[ImplementPropertyChanged]
+	[AddINotifyPropertyChangedInterface]
     public class MainViewModel : ViewModelBase
     {
         private IFileDialogService _fileDialogService;

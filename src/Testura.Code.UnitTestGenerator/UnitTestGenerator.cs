@@ -12,7 +12,7 @@ using Testura.Code.UnitTestGenerator.Util;
 
 namespace Testura.Code.UnitTestGenerator
 {
-    public class UnitTestGenerator
+	public class UnitTestGenerator
     {
         private readonly ICodeSaver _codeSaver;
         private readonly IFileService _fileService;
