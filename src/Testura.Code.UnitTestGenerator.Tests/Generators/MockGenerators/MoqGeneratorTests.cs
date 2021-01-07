@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Microsoft.CodeAnalysis.Semantics;
 using NUnit.Framework;
 using Testura.Code.Models;
 using Testura.Code.UnitTestGenerator.Generators.MockGenerators;
